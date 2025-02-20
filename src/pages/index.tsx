@@ -1,52 +1,41 @@
+import Content from '@/components/Content';
+import Navbar from '@/components/Navbar';
+import SideMenu from '@/components/SideMenu';
+import { Col, Row } from 'antd';
 import { Inter } from 'next/font/google';
-import { Button } from 'antd';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createUser, getUsers } from './api/users';
+import { getUsers } from './api/users';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
 export default function Home() {
-  const queryClient = useQueryClient();
-
-  const query = useQuery({ queryKey: ['users'], queryFn: getUsers });
-
-  const mutation = useMutation({
-    mutationFn: createUser,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-    },
+  // const [userData, setUserData] = useState([]);
+  const { data, isLoading } = useQuery({
+    queryKey: ['users'],
+    queryFn: getUsers,
   });
 
-  if (query.isFetching) return <div>Loading...</div>;
+  // if(isSuccess) return setUserData(data);
+
+  // console.log(data);
 
   return (
-    <main className={`container mx-auto flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}>
-      <div>
-        <Button
-          type='primary'
-          onClick={() => {
-            mutation.mutate({
-              id: 2,
-              name: 'Test',
-              email: 'test@gmail.com',
-            });
-          }}
-        >
-          Add User
-        </Button>
-      </div>
-      {query.data?.map((user: User) => (
-        <div key={user.id} className='flex flex-col items-center space-y-4'>
-          <h2 className='text-2xl font-bold'>{user.name}</h2>
-          <p className='text-lg'>{user.email}</p>
-        </div>
-      ))}
-    </main>
+    <div className={`min-h-screen bg-background ${inter.className}`}>
+      <Navbar />
+      <main>
+        <Row gutter={[16, 16]} className='flex justify-center p-8'>
+          <Col span={4} className='hidden lg:block'>
+            <SideMenu />
+          </Col>
+          <Col span={12} className='pb-3'>
+            <Content userData={data} userDataLoading={isLoading} />
+          </Col>
+          <Col span={8} className='bg-red-500 hidden lg:block'>
+            col-8
+          </Col>
+        </Row>
+      </main>
+    </div>
   );
 }
