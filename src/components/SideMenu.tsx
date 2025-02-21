@@ -2,6 +2,7 @@ import React from 'react';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
+import { useRouter } from 'next/router';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -13,7 +14,7 @@ const menuStyle: React.CSSProperties = {
 
 const items: MenuItem[] = [
   {
-    key: 'home',
+    key: '/',
     icon: <HomeOutlined />,
     label: 'Home',
   },
@@ -25,15 +26,16 @@ const items: MenuItem[] = [
 ];
 
 const SideMenu: React.FC = () => {
+  const router = useRouter();
   const onClick: MenuProps['onClick'] = (e) => {
-    console.log('click ', e);
+    router.push(e.key);
   };
 
   return (
     <Menu
       onClick={onClick}
       style={menuStyle}
-      defaultSelectedKeys={['home']}
+      defaultSelectedKeys={['/']}
       mode='inline'
       items={items}
     />

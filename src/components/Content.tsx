@@ -1,19 +1,17 @@
 import { useState } from 'react';
 import { Avatar, Card, Flex, Pagination } from 'antd';
-import { useQuery } from '@tanstack/react-query';
-import { getPosts } from '@/pages/api/posts';
 import { getInitials } from '@/lib/utils';
 
-const Content: React.FC<ContentProps> = ({ userData, userDataLoading }) => {
+const Content: React.FC<ContentProps> = ({
+  userData,
+  userDataLoading,
+  postData,
+  postDataLoading,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const POSTS_PER_PAGE = 5;
 
   const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['posts'],
-    queryFn: getPosts,
-  });
 
   const cardStyle: React.CSSProperties = {
     width: '100%',
@@ -22,7 +20,7 @@ const Content: React.FC<ContentProps> = ({ userData, userDataLoading }) => {
     border: '3px solid #f0f0f0',
   };
 
-  if (isLoading || userDataLoading) {
+  if (postDataLoading || userDataLoading) {
     return (
       <Flex gap='middle' align='center' vertical>
         {[...Array(POSTS_PER_PAGE)].map((_, index) => (
@@ -32,9 +30,9 @@ const Content: React.FC<ContentProps> = ({ userData, userDataLoading }) => {
     );
   }
 
-  const totalPosts = data?.length || 0;
+  const totalPosts = postData?.length || 0;
 
-  const paginatedData = data?.slice(
+  const paginatedData = postData?.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
     currentPage * POSTS_PER_PAGE
   );
@@ -45,14 +43,21 @@ const Content: React.FC<ContentProps> = ({ userData, userDataLoading }) => {
     <Flex gap='middle' align='center' vertical>
       {paginatedData?.map((post: PostProps) => {
         const user = userData?.find((u: UserProps) => u.id === post.user_id);
-        const avatarColor = ColorList[Math.floor(Math.random() * ColorList.length)];
+        const avatarColor =
+          ColorList[Math.floor(Math.random() * ColorList.length)];
 
         return (
           <Card style={cardStyle} key={post.id}>
             <Card.Meta
               avatar={
-                <Avatar style={{ backgroundColor: avatarColor, verticalAlign: 'middle' }} size="large">
-                  {getInitials(user ? user.name : 'Anonymous')}
+                <Avatar
+                  style={{
+                    backgroundColor: avatarColor,
+                    verticalAlign: 'middle',
+                  }}
+                  size='large'
+                >
+                  {getInitials(user ? user.name : 'A')}
                 </Avatar>
               }
               title={post.title}

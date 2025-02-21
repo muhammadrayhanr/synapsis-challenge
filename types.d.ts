@@ -16,4 +16,6 @@ interface PostProps {
   interface ContentProps {
     userData: UserProps[];
     userDataLoading: boolean;
+    postData: PostProps[];
+    postDataLoading: boolean;
   }
