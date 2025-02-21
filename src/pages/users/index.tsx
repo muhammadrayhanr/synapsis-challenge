@@ -1,12 +1,29 @@
 import React, { useState } from 'react';
-import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Avatar, Card, Flex, Pagination } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+} from '@ant-design/icons';
+import {
+  Avatar,
+  Card,
+  Dropdown,
+  Flex,
+  MenuProps,
+  Pagination,
+  Space,
+} from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '@/api/users';
+import { userStore } from '@/store/slices';
 
 const Users: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const DATA_PER_PAGE = 6;
+  const userId = userStore((state) => state.userId);
+  const getUserId = userStore((state) => state.getUserId);
+
+  console.log(userId);
 
   const { data, isLoading } = useQuery({
     queryKey: ['users'],
@@ -15,13 +32,9 @@ const Users: React.FC = () => {
 
   const cardStyle: React.CSSProperties = {
     width: '100%',
-    minWidth: 200,
+    minWidth: 260,
     maxWidth: '40%',
     border: '3px solid #f0f0f0',
-  };
-
-  const handleEditClick = (index: number) => {
-    console.log(`Edit Card ${index}`);
   };
 
   const totalPosts = data?.length || 0;
@@ -42,18 +55,15 @@ const Users: React.FC = () => {
   }
 
   return (
-    <Flex vertical align='center'>
-      <Flex wrap gap='small' justify='center' align='center'>
+    <Flex vertical align='center' className='py-3'>
+      <Flex wrap gap='small' justify='center'>
         {paginatedData.map((user: UserProps, index: number) => (
           <Card
             key={user.id}
             style={cardStyle}
             actions={[
-              <EditOutlined
-                key='edit'
-                onClick={() => handleEditClick(index)}
-              />,
-              <EllipsisOutlined key='ellipsis' />,
+              <EditOutlined key='edit' onClick={() => getUserId(user.id)} />,
+              <DeleteOutlined key='delete' />,
             ]}
           >
             <Card.Meta
