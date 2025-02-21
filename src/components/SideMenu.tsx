@@ -35,7 +35,7 @@ const SideMenu: React.FC = () => {
     <Menu
       onClick={onClick}
       style={menuStyle}
-      defaultSelectedKeys={['/']}
+      // defaultSelectedKeys={['/']}
       mode='inline'
       items={items}
     />

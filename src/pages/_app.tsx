@@ -5,14 +5,14 @@ import theme from './theme/themeConfig';
 import { QueryClientProvider } from '@tanstack/react-query';
 import queryClient from '@/components/providers/queryClient';
 import '@/styles/globals.css';
-import Shell from '@/components/Shell/Shell';
+import AppShell from '@/components/Shell/AppShell';
 
 const App = ({ Component, pageProps }: AppProps) => (
   <ConfigProvider theme={theme}>
     <QueryClientProvider client={queryClient}>
-      <Shell>
+      <AppShell>
         <Component {...pageProps} />
-      </Shell>
+      </AppShell>
     </QueryClientProvider>
   </ConfigProvider>
 );

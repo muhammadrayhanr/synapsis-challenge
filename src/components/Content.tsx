@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import { Avatar, Card, Flex, Pagination } from 'antd';
-import { getInitials } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
+import { getUsers } from '@/api/users';
+import { getPosts } from '@/api/posts';
 
-const Content: React.FC<ContentProps> = ({
-  userData,
-  userDataLoading,
-  postData,
-  postDataLoading,
-}) => {
+const Content: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const POSTS_PER_PAGE = 5;
+  const DATA_PER_PAGE = 5;
 
-  const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
+  const users = useQuery({
+    queryKey: ['users'],
+    queryFn: getUsers,
+  });
+
+  const posts = useQuery({
+    queryKey: ['posts'],
+    queryFn: getPosts,
+  });
 
   const cardStyle: React.CSSProperties = {
     width: '100%',
@@ -20,45 +25,34 @@ const Content: React.FC<ContentProps> = ({
     border: '3px solid #f0f0f0',
   };
 
-  if (postDataLoading || userDataLoading) {
+  if (posts.isLoading || users.isLoading) {
     return (
       <Flex gap='middle' align='center' vertical>
-        {[...Array(POSTS_PER_PAGE)].map((_, index) => (
+        {[...Array(DATA_PER_PAGE)].map((_, index) => (
           <Card loading={true} style={cardStyle} key={index} />
         ))}
       </Flex>
     );
   }
 
-  const totalPosts = postData?.length || 0;
+  const totalPosts = posts.data?.length || 0;
 
-  const paginatedData = postData?.slice(
-    (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
+  const paginatedData = posts.data?.slice(
+    (currentPage - 1) * DATA_PER_PAGE,
+    currentPage * DATA_PER_PAGE
   );
-
-  console.log(userData);
 
   return (
     <Flex gap='middle' align='center' vertical>
       {paginatedData?.map((post: PostProps) => {
-        const user = userData?.find((u: UserProps) => u.id === post.user_id);
-        const avatarColor =
-          ColorList[Math.floor(Math.random() * ColorList.length)];
-
+        const user = users.data?.find((u: UserProps) => u.id === post.user_id);
         return (
           <Card style={cardStyle} key={post.id}>
             <Card.Meta
               avatar={
                 <Avatar
-                  style={{
-                    backgroundColor: avatarColor,
-                    verticalAlign: 'middle',
-                  }}
-                  size='large'
-                >
-                  {getInitials(user ? user.name : 'A')}
-                </Avatar>
+                  src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${post.id}`}
+                />
               }
               title={post.title}
               description={
@@ -76,7 +70,7 @@ const Content: React.FC<ContentProps> = ({
       <Pagination
         current={currentPage}
         total={totalPosts}
-        pageSize={POSTS_PER_PAGE}
+        pageSize={DATA_PER_PAGE}
         onChange={(page) => setCurrentPage(page)}
       />
     </Flex>
