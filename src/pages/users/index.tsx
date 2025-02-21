@@ -1,18 +1,6 @@
-import React, { useState } from 'react';
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-} from '@ant-design/icons';
-import {
-  Avatar,
-  Card,
-  Dropdown,
-  Flex,
-  MenuProps,
-  Pagination,
-  Space,
-} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Avatar, Card, Flex, Modal, Pagination } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '@/api/users';
 import { userStore } from '@/store/slices';
@@ -23,7 +11,23 @@ const Users: React.FC = () => {
   const userId = userStore((state) => state.userId);
   const getUserId = userStore((state) => state.getUserId);
 
-  console.log(userId);
+  // State untuk modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserProps | null>(null);
+
+  // State untuk cek apakah di mobile
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Set true jika layar < 768px
+    };
+
+    handleResize(); // Jalankan saat pertama kali
+    window.addEventListener('resize', handleResize); // Update saat resize
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const { data, isLoading } = useQuery({
     queryKey: ['users'],
@@ -38,7 +42,6 @@ const Users: React.FC = () => {
   };
 
   const totalPosts = data?.length || 0;
-
   const paginatedData = data?.slice(
     (currentPage - 1) * DATA_PER_PAGE,
     currentPage * DATA_PER_PAGE
@@ -46,7 +49,7 @@ const Users: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Flex gap='middle' align='center' vertical>
+      <Flex wrap gap='small' justify='center'>
         {[...Array(DATA_PER_PAGE)].map((_, index) => (
           <Card loading={true} style={cardStyle} key={index} />
         ))}
@@ -54,15 +57,25 @@ const Users: React.FC = () => {
     );
   }
 
+  const handleEditClick = (user: UserProps) => {
+    getUserId(user.id);
+    if (isMobile) {
+      setSelectedUser(user);
+      setIsModalOpen(true);
+    } else {
+      console.log('Edit User:', userId);
+    }
+  };
+
   return (
     <Flex vertical align='center' className='py-3'>
       <Flex wrap gap='small' justify='center'>
-        {paginatedData.map((user: UserProps, index: number) => (
+        {paginatedData.map((user: UserProps) => (
           <Card
             key={user.id}
             style={cardStyle}
             actions={[
-              <EditOutlined key='edit' onClick={() => getUserId(user.id)} />,
+              <EditOutlined key='edit' onClick={() => handleEditClick(user)} />,
               <DeleteOutlined key='delete' />,
             ]}
           >
@@ -106,6 +119,17 @@ const Users: React.FC = () => {
         onChange={(page) => setCurrentPage(page)}
         className='mt-5'
       />
+
+      {/* Modal Edit */}
+      <Modal
+        title='Edit User'
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+      >
+        <p>Edit user dengan ID: {selectedUser?.id}</p>
+        <p>Nama: {selectedUser?.name}</p>
+      </Modal>
     </Flex>
   );
 };

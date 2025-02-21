@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import Navbar from '../Navbar';
+import Navbar from '@/components/Navbar';
 import { Inter } from 'next/font/google';
-import SideMenu from '../SideMenu';
+import SideMenu from '@/components/SideMenu';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,9 +13,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
         <div className='hidden lg:block'>
           <SideMenu />
         </div>
-        <div className='col-span-3 pb-3'>
-          {children}
-        </div>
+        <div className='col-span-3 pb-3'>{children}</div>
         <div className='hidden lg:block' />
       </div>
     </div>
