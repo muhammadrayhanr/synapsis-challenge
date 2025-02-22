@@ -1,11 +1,14 @@
 import axios from 'axios';
 
 export const getUsers = async () => {
-  const response = await axios.get('https://gorest.co.in/public/v2/users', {
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_GOREST_TOKEN}`,
-    },
-  });
+  const response = await axios.get(
+    'https://gorest.co.in/public/v2/users?page=1&per_page=24',
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GOREST_TOKEN}`,
+      },
+    }
+  );
   return response.data;
 };
 

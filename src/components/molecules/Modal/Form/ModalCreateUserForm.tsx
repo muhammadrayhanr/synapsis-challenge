@@ -10,6 +10,7 @@ import queryClient from '@/config/providers/queryClient';
 import { genderList, statusList } from '@/lib/mocks';
 import Dropdown from '@/components/atoms/Dropdown';
 import { showNotification } from '@/lib/utils';
+import { userStore } from '@/store/slices';
 
 const ModalCreateUserForm: React.FC<ModalFormProps> = ({
   title,
@@ -20,6 +21,8 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
     mode: 'onChange',
   });
 
+  const { userId, setUserId } = userStore();
+
   useEffect(() => {
     if (defaultValues) {
       reset(defaultValues);
@@ -28,7 +31,8 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
 
   const submit = useMutation({
     mutationFn: ({ data }: { data: any }) => createUser(data),
-    onSuccess: () => {
+    onSuccess: (newUser) => {
+      setUserId(newUser.id);
       queryClient.invalidateQueries({ queryKey: ['users'] });
       showNotification(
         'success',
@@ -44,6 +48,8 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
       );
     },
   });
+
+  console.log(userId);
 
   const onSubmit = (data: any) => {
     submit.mutate({ data });

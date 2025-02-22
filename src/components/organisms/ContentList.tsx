@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Avatar, Card, Flex, FloatButton, Pagination } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '@/api/users';
 import { getPosts } from '@/api/posts';
 import { cardContentStyle } from '@/lib/mocks';
-import { modalStore } from '@/store/slices';
+import { modalStore, userStore } from '@/store/slices';
 import ModalCreatePostForm from '@/components/molecules/Modal/Form/ModalCreatePostForm';
+import { PlusOutlined } from '@ant-design/icons';
 
 const ContentList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const DATA_PER_PAGE = 5;
+  // const [isUser, setIsUser] = useState(false);
+  const DATA_PER_PAGE = 4;
 
-  const { showModal } = modalStore();
+  const { showModal, setShowModal } = modalStore();
+  const { userId } = userStore();
 
   const users = useQuery({
     queryKey: ['users'],
@@ -22,6 +25,10 @@ const ContentList: React.FC = () => {
     queryKey: ['posts'],
     queryFn: getPosts,
   });
+
+  // useEffect(() => {
+  //   if (userId) return setIsUser(true);
+  // }, []);
 
   if (posts.isLoading || users.isLoading) {
     return (
@@ -65,6 +72,7 @@ const ContentList: React.FC = () => {
           </Card>
         );
       })}
+
       <Pagination
         current={currentPage}
         total={totalPosts}
@@ -72,8 +80,22 @@ const ContentList: React.FC = () => {
         onChange={(page) => setCurrentPage(page)}
       />
 
-      {showModal.create && (
+      {showModal.create && userId && (
         <ModalCreatePostForm title='Create Post' defaultValues={null} />
+      )}
+
+      {userId && (
+        <FloatButton
+          icon={<PlusOutlined />}
+          type='primary'
+          style={{
+            insetInlineEnd: 40,
+            width: 54,
+            height: 54,
+            fontSize: 12,
+          }}
+          onClick={() => setShowModal({ create: true })}
+        />
       )}
     </Flex>
   );

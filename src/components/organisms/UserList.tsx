@@ -1,5 +1,5 @@
 import { deleteUser, getUsers } from '@/api/users';
-import { modalStore } from '@/store/slices';
+import { modalStore, userStore } from '@/store/slices';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Avatar, Card, Flex, Pagination, Popconfirm } from 'antd';
 import {
@@ -10,15 +10,15 @@ import {
 import { useState } from 'react';
 import { cardUserStyle } from '@/lib/mocks';
 import ModalEditUserForm from '@/components/molecules/Modal/Form/ModalEditUserForm';
-import ModalCreateUserForm from '@/components/molecules/Modal/Form/ModalCreateUserForm';
 import queryClient from '@/config/providers/queryClient';
 import { showNotification } from '@/lib/utils';
 
 const UserList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const DATA_PER_PAGE = 6;
+  const DATA_PER_PAGE = 8;
 
   const { showModal, setShowModal } = modalStore();
+  const { userId } = userStore();
 
   const [selectedUser, setSelectedUser] = useState<UserProps | null>(null);
 
@@ -78,20 +78,27 @@ const UserList: React.FC = () => {
           <Card
             key={user.id}
             style={cardUserStyle}
-            actions={[
-              <EditOutlined key='edit' onClick={() => handleEditClick(user)} />,
-              <Popconfirm
-                key='delete'
-                title='Delete User'
-                description='Are you sure to delete this user?'
-                onConfirm={() => confirm(user)}
-                okText='Yes'
-                cancelText='No'
-                icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-              >
-                <DeleteOutlined onClick={() => setSelectedUser(user)} />
-              </Popconfirm>,
-            ]}
+            actions={
+              userId
+                ? [
+                    <EditOutlined
+                      key='edit'
+                      onClick={() => handleEditClick(user)}
+                    />,
+                    <Popconfirm
+                      key='delete'
+                      title='Delete User'
+                      description='Are you sure to delete this user?'
+                      onConfirm={() => confirm(user)}
+                      okText='Yes'
+                      cancelText='No'
+                      icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                    >
+                      <DeleteOutlined onClick={() => setSelectedUser(user)} />
+                    </Popconfirm>,
+                  ]
+                : []
+            }
           >
             <Card.Meta
               avatar={
@@ -134,9 +141,6 @@ const UserList: React.FC = () => {
         className='mt-5'
       />
 
-      {showModal.create && (
-        <ModalCreateUserForm title='Create User' defaultValues={null} />
-      )}
       {showModal.edit && selectedUser && (
         <ModalEditUserForm title='Edit User' defaultValues={selectedUser} />
       )}
