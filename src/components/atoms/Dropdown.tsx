@@ -1,20 +1,13 @@
 import React from 'react';
-import { Controller, Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
-interface Option {
-  label: string;
-  value: string | number;
-}
-
-interface DropdownProps {
-  control: Control<any>;
-  name: string;
-  options: Option[];
-  className?: string;
-  placeholder?: string;
-}
-
-const Dropdown: React.FC<DropdownProps> = ({ control, name, options, className, placeholder }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  control,
+  name,
+  options,
+  className,
+  placeholder,
+}) => {
   return (
     <Controller
       control={control}
@@ -27,7 +20,7 @@ const Dropdown: React.FC<DropdownProps> = ({ control, name, options, className, 
           value={value ?? ''}
         >
           {placeholder && (
-            <option value="" disabled hidden>
+            <option value='' disabled hidden>
               {placeholder}
             </option>
           )}

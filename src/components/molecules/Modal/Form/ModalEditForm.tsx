@@ -1,15 +1,11 @@
 import React from 'react';
-import ModalComp from '../ModalComp';
+import ModalComp from '@/components/molecules/Modal/ModalComp';
 import { Flex } from 'antd';
 import { useForm } from 'react-hook-form';
 import Text from '@/components/atoms/Text';
 import Input from '@/components/atoms/Input';
 import Dropdown from '@/components/atoms/Dropdown';
-
-interface ModalEditFormProps {
-  title: string;
-  defaultValues: any;
-}
+import { genderList, statusList } from '@/lib/mocks';
 
 const ModalEditForm: React.FC<ModalEditFormProps> = ({ title, defaultValues }) => {
   const {
@@ -52,10 +48,7 @@ const ModalEditForm: React.FC<ModalEditFormProps> = ({ title, defaultValues }) =
           <Dropdown
             control={control}
             name="gender"
-            options={[
-              { label: 'Male', value: 'male' },
-              { label: 'Female', value: 'female' }
-            ]}
+            options={genderList.flat()}
             placeholder="Select Gender"
             className="border gap-8 border-[#AFAFAF] bg-white rounded-[5px] py-[10px] px-[11px] w-full text-[12px] items-center"
           />
@@ -65,10 +58,7 @@ const ModalEditForm: React.FC<ModalEditFormProps> = ({ title, defaultValues }) =
           <Dropdown
             control={control}
             name="status"
-            options={[
-              { label: 'Active', value: 'active' },
-              { label: 'Inactive', value: 'inactive' }
-            ]}
+            options={statusList.flat()}
             placeholder="Select Status"
             className="border gap-8 border-[#AFAFAF] bg-white rounded-[5px] py-[10px] px-[11px] w-full text-[12px] items-center"
           />

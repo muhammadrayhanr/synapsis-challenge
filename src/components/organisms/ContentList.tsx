@@ -3,6 +3,7 @@ import { Avatar, Card, Flex, Pagination } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '@/api/users';
 import { getPosts } from '@/api/posts';
+import { cardContentStyle } from '@/lib/mocks';
 
 const ContentList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,18 +19,11 @@ const ContentList: React.FC = () => {
     queryFn: getPosts,
   });
 
-  const cardStyle: React.CSSProperties = {
-    width: '100%',
-    minWidth: 400,
-    maxWidth: 600,
-    border: '3px solid #f0f0f0',
-  };
-
   if (posts.isLoading || users.isLoading) {
     return (
       <Flex gap='middle' align='center' vertical>
         {[...Array(DATA_PER_PAGE)].map((_, index) => (
-          <Card loading={true} style={cardStyle} key={index} />
+          <Card loading={true} style={cardContentStyle} key={index} />
         ))}
       </Flex>
     );
@@ -47,7 +41,7 @@ const ContentList: React.FC = () => {
       {paginatedData?.map((post: PostProps) => {
         const user = users.data?.find((u: UserProps) => u.id === post.user_id);
         return (
-          <Card style={cardStyle} key={post.id}>
+          <Card style={cardContentStyle} key={post.id}>
             <Card.Meta
               avatar={
                 <Avatar

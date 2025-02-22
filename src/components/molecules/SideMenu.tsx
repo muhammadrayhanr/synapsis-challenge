@@ -3,14 +3,9 @@ import { HomeOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { useRouter } from 'next/router';
+import { menuStyle } from '@/lib/mocks';
 
 type MenuItem = Required<MenuProps>['items'][number];
-
-const menuStyle: React.CSSProperties = {
-  width: 200,
-  backgroundColor: '#F5F5F5',
-  borderRight: '0',
-};
 
 const SideMenu: React.FC = () => {
   const router = useRouter();

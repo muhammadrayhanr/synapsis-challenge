@@ -1,13 +1,5 @@
-import { Controller, Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import React from 'react';
-
-interface InputProps {
-  name: string;
-  control: Control;
-  className?: string;
-  placeholder?: string;
-  [key: string]: any;
-}
 
 const Input: React.FC<InputProps> = ({
   name,

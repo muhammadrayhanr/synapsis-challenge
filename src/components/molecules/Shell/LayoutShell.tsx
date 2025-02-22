@@ -1,15 +1,10 @@
 import { useRouter } from 'next/router';
 import ContentList from '@/components/organisms/ContentList';
 import UserList from '@/components/organisms/UserList';
+import { dataLayout } from '@/lib/mocks';
 
 const LayoutShell = () => {
   const router = useRouter();
-
-  const dataLayout = [
-    { path: '/', layout: 'home' },
-    { path: '/users', layout: 'users' },
-    { path: '/post/:id', layout: 'post' },
-  ];
 
   const findLayout = dataLayout.find(
     (layout) => layout.path === router.pathname
