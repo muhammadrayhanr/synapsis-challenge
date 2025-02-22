@@ -2,13 +2,24 @@ import { create } from 'zustand';
 
 interface UserState {
   userId: null | number;
+  setUserId: (id: number) => void;
 }
 
-interface ActionState {
-  getUserId: (id: number) => void;
-}
-
-export const userStore = create<UserState & ActionState>((set) => ({
+export const userStore = create<UserState>((set) => ({
   userId: null,
-  getUserId: (id: number) => set({ userId: id }),
+  setUserId: (id: number) => set({ userId: id }),
+}));
+
+interface ModalState {
+  showModal: {
+    create: boolean;
+    edit: boolean;
+  };
+  setShowModal: (value: Partial<ModalState['showModal']>) => void;
+}
+
+export const modalStore = create<ModalState>((set) => ({
+  showModal: { create: false, edit: false },
+  setShowModal: (value) =>
+    set((prev) => ({ showModal: { ...prev.showModal, ...value } })),
 }));

@@ -3,13 +3,15 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Avatar, Card, Flex, Modal, Pagination } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '@/api/users';
-import { userStore } from '@/store/slices';
+import { modalStore, userStore } from '@/store/slices';
+import ModalComp from '@/components/Modal/ModalComp';
 
 const Users: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const DATA_PER_PAGE = 6;
   const userId = userStore((state) => state.userId);
-  const getUserId = userStore((state) => state.getUserId);
+  const setUserId = userStore((state) => state.setUserId);
+  const setShowModal = modalStore((state) => state.setShowModal);
 
   // State untuk modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +22,7 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Set true jika layar < 768px
+      setIsMobile(window.innerWidth < 1024); // Set true jika layar < 768px
     };
 
     handleResize(); // Jalankan saat pertama kali
@@ -58,13 +60,9 @@ const Users: React.FC = () => {
   }
 
   const handleEditClick = (user: UserProps) => {
-    getUserId(user.id);
-    if (isMobile) {
-      setSelectedUser(user);
-      setIsModalOpen(true);
-    } else {
-      console.log('Edit User:', userId);
-    }
+    setUserId(user.id);
+    setSelectedUser(user);
+    setShowModal({ edit: true });
   };
 
   return (
@@ -119,17 +117,10 @@ const Users: React.FC = () => {
         onChange={(page) => setCurrentPage(page)}
         className='mt-5'
       />
-
-      {/* Modal Edit */}
-      <Modal
-        title='Edit User'
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        footer={null}
-      >
+      <ModalComp title={'Edit User'}>
         <p>Edit user dengan ID: {selectedUser?.id}</p>
         <p>Nama: {selectedUser?.name}</p>
-      </Modal>
+      </ModalComp>
     </Flex>
   );
 };
