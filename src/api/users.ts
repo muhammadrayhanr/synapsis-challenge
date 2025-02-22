@@ -37,3 +37,15 @@ export const editUser = async (
   );
   return response.data;
 };
+
+export const deleteUser = async (id: number): Promise<UserProps> => {
+  const response = await axios.delete(
+    `https://gorest.co.in/public/v2/users/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GOREST_TOKEN}`,
+      },
+    }
+  );
+  return response.data;
+};

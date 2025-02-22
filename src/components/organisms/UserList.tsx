@@ -1,18 +1,28 @@
-import { getUsers } from '@/api/users';
-import { modalStore, userStore } from '@/store/slices';
-import { useQuery } from '@tanstack/react-query';
-import { Avatar, Card, Flex, Pagination } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { deleteUser, getUsers } from '@/api/users';
+import { modalStore } from '@/store/slices';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  Avatar,
+  Card,
+  Flex,
+  Pagination,
+  Popconfirm,
+} from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import { useState } from 'react';
 import { cardUserStyle } from '@/lib/mocks';
 import ModalEditUserForm from '@/components/molecules/Modal/Form/ModalEditUserForm';
 import ModalCreateUserForm from '@/components/molecules/Modal/Form/ModalCreateUserForm';
+import queryClient from '@/config/providers/queryClient';
 
 const UserList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const DATA_PER_PAGE = 8;
+  const DATA_PER_PAGE = 6;
 
-  const setUserId = userStore((state) => state.setUserId);
   const { showModal, setShowModal } = modalStore();
 
   const [selectedUser, setSelectedUser] = useState<UserProps | null>(null);
@@ -28,6 +38,13 @@ const UserList: React.FC = () => {
     currentPage * DATA_PER_PAGE
   );
 
+  const submit = useMutation({
+    mutationFn: ({ id }: { id: number }) => deleteUser(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
+
   if (isLoading) {
     return (
       <Flex wrap gap='small' justify='center'>
@@ -39,9 +56,12 @@ const UserList: React.FC = () => {
   }
 
   const handleEditClick = (user: UserProps) => {
-    setUserId(user.id);
     setSelectedUser(user);
     setShowModal({ edit: true });
+  };
+
+  const confirm = (user: UserProps) => {
+    submit.mutate({ id: user.id });
   };
 
   return (
@@ -53,7 +73,17 @@ const UserList: React.FC = () => {
             style={cardUserStyle}
             actions={[
               <EditOutlined key='edit' onClick={() => handleEditClick(user)} />,
-              <DeleteOutlined key='delete' />,
+              <Popconfirm
+                key='delete'
+                title='Delete User'
+                description='Are you sure to delete this user?'
+                onConfirm={() => confirm(user)}
+                okText='Yes'
+                cancelText='No'
+                icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+              >
+                <DeleteOutlined onClick={() => setSelectedUser(user)} />
+              </Popconfirm>,
             ]}
           >
             <Card.Meta
