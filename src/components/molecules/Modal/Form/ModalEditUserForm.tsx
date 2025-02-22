@@ -9,6 +9,7 @@ import { genderList, statusList } from '@/lib/mocks';
 import { useMutation } from '@tanstack/react-query';
 import { editUser } from '@/api/users';
 import queryClient from '@/config/providers/queryClient';
+import { showNotification } from '@/lib/utils';
 
 const ModalEditUserForm: React.FC<ModalFormProps> = ({
   title,
@@ -30,6 +31,18 @@ const ModalEditUserForm: React.FC<ModalFormProps> = ({
       editUser(data, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+      showNotification(
+        'success',
+        'User Edited',
+        'User has been successfully edited.'
+      );
+    },
+    onError: () => {
+      showNotification(
+        'error',
+        'Delete Failed',
+        'Failed to edit user. Please try again.'
+      );
     },
   });
 

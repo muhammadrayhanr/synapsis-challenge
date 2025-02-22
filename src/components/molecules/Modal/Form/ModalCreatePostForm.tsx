@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import queryClient from '@/config/providers/queryClient';
 import Textarea from '@/components/atoms/Textarea';
 import { createPost } from '@/api/posts';
+import { showNotification } from '@/lib/utils';
 
 const ModalCreatePostForm: React.FC<ModalFormProps> = ({
   title,
@@ -28,6 +29,18 @@ const ModalCreatePostForm: React.FC<ModalFormProps> = ({
     mutationFn: ({ data }: { data: any }) => createPost(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+      showNotification(
+        'success',
+        'Post Created',
+        'Post has been successfully created.'
+      );
+    },
+    onError: () => {
+      showNotification(
+        'error',
+        'Create Failed',
+        'Failed to create post. Please try again.'
+      );
     },
   });
 

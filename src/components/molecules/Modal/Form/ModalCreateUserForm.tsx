@@ -9,6 +9,7 @@ import { createUser } from '@/api/users';
 import queryClient from '@/config/providers/queryClient';
 import { genderList, statusList } from '@/lib/mocks';
 import Dropdown from '@/components/atoms/Dropdown';
+import { showNotification } from '@/lib/utils';
 
 const ModalCreateUserForm: React.FC<ModalFormProps> = ({
   title,
@@ -29,6 +30,18 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
     mutationFn: ({ data }: { data: any }) => createUser(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+      showNotification(
+        'success',
+        'User Created',
+        'User has been successfully created.'
+      );
+    },
+    onError: () => {
+      showNotification(
+        'error',
+        'Delete Failed',
+        'Failed to create user. Please try again.'
+      );
     },
   });
 

@@ -1,7 +1,13 @@
-export const getInitials = (name: string): string =>
-  name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
+import { notification } from 'antd';
+
+export const showNotification = (
+  type: 'success' | 'error',
+  message: string,
+  description: string
+) => {
+  notification[type]({
+    message,
+    description,
+    placement: 'topRight',
+  });
+};

@@ -1,13 +1,7 @@
 import { deleteUser, getUsers } from '@/api/users';
 import { modalStore } from '@/store/slices';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  Avatar,
-  Card,
-  Flex,
-  Pagination,
-  Popconfirm,
-} from 'antd';
+import { Avatar, Card, Flex, Pagination, Popconfirm } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -18,6 +12,7 @@ import { cardUserStyle } from '@/lib/mocks';
 import ModalEditUserForm from '@/components/molecules/Modal/Form/ModalEditUserForm';
 import ModalCreateUserForm from '@/components/molecules/Modal/Form/ModalCreateUserForm';
 import queryClient from '@/config/providers/queryClient';
+import { showNotification } from '@/lib/utils';
 
 const UserList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +37,18 @@ const UserList: React.FC = () => {
     mutationFn: ({ id }: { id: number }) => deleteUser(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+      showNotification(
+        'success',
+        'User Deleted',
+        'User has been successfully deleted.'
+      );
+    },
+    onError: () => {
+      showNotification(
+        'error',
+        'Delete Failed',
+        'Failed to delete user. Please try again.'
+      );
     },
   });
 
