@@ -1,13 +1,17 @@
 import { useState } from 'react';
-import { Avatar, Card, Flex, Pagination } from 'antd';
+import { Avatar, Card, Flex, FloatButton, Pagination } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '@/api/users';
 import { getPosts } from '@/api/posts';
 import { cardContentStyle } from '@/lib/mocks';
+import { modalStore } from '@/store/slices';
+import ModalCreatePostForm from '@/components/molecules/Modal/Form/ModalCreatePostForm';
 
 const ContentList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const DATA_PER_PAGE = 5;
+
+  const { showModal } = modalStore();
 
   const users = useQuery({
     queryKey: ['users'],
@@ -67,6 +71,10 @@ const ContentList: React.FC = () => {
         pageSize={DATA_PER_PAGE}
         onChange={(page) => setCurrentPage(page)}
       />
+
+      {showModal.create && (
+        <ModalCreatePostForm title='Create Post' defaultValues={null} />
+      )}
     </Flex>
   );
 };

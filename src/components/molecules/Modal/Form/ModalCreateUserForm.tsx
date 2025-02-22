@@ -4,13 +4,13 @@ import { Flex } from 'antd';
 import { useForm } from 'react-hook-form';
 import Text from '@/components/atoms/Text';
 import Input from '@/components/atoms/Input';
-import Dropdown from '@/components/atoms/Dropdown';
-import { genderList, statusList } from '@/lib/mocks';
 import { useMutation } from '@tanstack/react-query';
-import { editUsers } from '@/api/users';
+import { createUser } from '@/api/users';
 import queryClient from '@/config/providers/queryClient';
+import { genderList, statusList } from '@/lib/mocks';
+import Dropdown from '@/components/atoms/Dropdown';
 
-const ModalEditForm: React.FC<ModalEditFormProps> = ({
+const ModalCreateUserForm: React.FC<ModalFormProps> = ({
   title,
   defaultValues,
 }) => {
@@ -25,21 +25,15 @@ const ModalEditForm: React.FC<ModalEditFormProps> = ({
     }
   }, [defaultValues, reset]);
 
-  const mutation = useMutation({
-    mutationFn: ({ data, id }: { data: any; id: number }) =>
-      editUsers(data, id),
+  const submit = useMutation({
+    mutationFn: ({ data }: { data: any }) => createUser(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
     },
   });
 
   const onSubmit = (data: any) => {
-    if (!defaultValues?.id) {
-      console.error('ID tidak ditemukan!');
-      return;
-    }
-
-    mutation.mutate({ data, id: defaultValues.id });
+    submit.mutate({ data });
   };
 
   return (
@@ -90,4 +84,4 @@ const ModalEditForm: React.FC<ModalEditFormProps> = ({
   );
 };
 
-export default ModalEditForm;
+export default ModalCreateUserForm;

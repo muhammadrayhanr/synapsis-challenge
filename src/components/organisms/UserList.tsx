@@ -4,15 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import { Avatar, Card, Flex, Pagination } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import ModalEditForm from '@/components/molecules/Modal/Form/ModalEditForm';
 import { cardUserStyle } from '@/lib/mocks';
+import ModalEditUserForm from '@/components/molecules/Modal/Form/ModalEditUserForm';
+import ModalCreateUserForm from '@/components/molecules/Modal/Form/ModalCreateUserForm';
 
 const UserList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const DATA_PER_PAGE = 6;
+  const DATA_PER_PAGE = 8;
 
   const setUserId = userStore((state) => state.setUserId);
-  const setShowModal = modalStore((state) => state.setShowModal);
+  const { showModal, setShowModal } = modalStore();
 
   const [selectedUser, setSelectedUser] = useState<UserProps | null>(null);
 
@@ -96,7 +97,12 @@ const UserList: React.FC = () => {
         className='mt-5'
       />
 
-      <ModalEditForm title={'Edit User'} defaultValues={selectedUser} />
+      {showModal.create && (
+        <ModalCreateUserForm title='Create User' defaultValues={null} />
+      )}
+      {showModal.edit && selectedUser && (
+        <ModalEditUserForm title='Edit User' defaultValues={selectedUser} />
+      )}
     </Flex>
   );
 };

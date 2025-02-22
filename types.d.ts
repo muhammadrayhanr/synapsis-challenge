@@ -31,7 +31,7 @@ interface ModalCompProps {
   handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
 }
 
-interface ModalEditFormProps {
+interface ModalFormProps {
   title: string;
   defaultValues: any;
 }
@@ -61,5 +61,31 @@ interface TextProps {
   type?: string;
   text: string;
   className?: string;
+  [key: string]: any;
+}
+
+interface UserState {
+  userId: null | number;
+  setUserId: (id: number) => void;
+  selectedUser: null | any;
+  setSelectedUser: (user: any) => void;
+}
+
+interface ModalState {
+  showModal: {
+    create: boolean;
+    edit: boolean;
+  };
+  setShowModal: (value: Partial<ModalState['showModal']>) => void;
+}
+
+interface TextareaProps {
+  className?: string;
+  control: any;
+  name: string;
+  value?: string;
+  rows?: number;
+  cols?: number;
+  placeholder?: string;
   [key: string]: any;
 }

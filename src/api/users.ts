@@ -9,7 +9,20 @@ export const getUsers = async () => {
   return response.data;
 };
 
-export const editUsers = async (
+export const createUser = async (data: UserProps): Promise<UserProps> => {
+  const response = await axios.post(
+    'https://gorest.co.in/public/v2/users',
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GOREST_TOKEN}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const editUser = async (
   data: UserProps,
   id: number
 ): Promise<UserProps> => {
