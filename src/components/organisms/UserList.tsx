@@ -83,7 +83,14 @@ const UserList: React.FC = () => {
                 ? [
                     <EditOutlined
                       key='edit'
-                      onClick={() => handleEditClick(user)}
+                      onClick={
+                        user?.id === userId
+                          ? undefined
+                          : () => handleEditClick(user)
+                      }
+                      style={{
+                        cursor: user?.id === userId ? 'not-allowed' : 'pointer',
+                      }}
                     />,
                     <Popconfirm
                       key='delete'
@@ -93,8 +100,15 @@ const UserList: React.FC = () => {
                       okText='Yes'
                       cancelText='No'
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                      disabled={user?.id === userId ? true : false}
                     >
-                      <DeleteOutlined onClick={() => setSelectedUser(user)} />
+                      <DeleteOutlined
+                        onClick={() => setSelectedUser(user)}
+                        style={{
+                          cursor:
+                            user?.id === userId ? 'not-allowed' : 'pointer',
+                        }}
+                      />
                     </Popconfirm>,
                   ]
                 : []

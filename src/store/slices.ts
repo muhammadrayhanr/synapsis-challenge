@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export const userStore = create<UserState>((set) => ({
-  userId: null,
+  userId: 7373649,
   setUserId: (id: number) => set({ userId: id }),
   selectedUser: null,
   setSelectedUser: (user) => set({ selectedUser: user }),

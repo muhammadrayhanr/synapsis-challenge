@@ -1,14 +1,17 @@
 import React from 'react';
-import { HomeOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { useRouter } from 'next/router';
 import { menuStyle } from '@/lib/mocks';
+import { userStore } from '@/store/slices';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 const SideMenu: React.FC = () => {
   const router = useRouter();
+
+  const { userId } = userStore();
 
   const onClick: MenuProps['onClick'] = (e) => {
     router.push(e.key);
@@ -22,9 +25,18 @@ const SideMenu: React.FC = () => {
     },
     {
       key: 'users',
-      icon: <UserOutlined />,
+      icon: <TeamOutlined />,
       label: 'Users',
     },
+    ...(userId
+      ? [
+          {
+            key: 'profile',
+            icon: <UserOutlined />,
+            label: 'Profile',
+          },
+        ]
+      : []),
   ];
 
   return (

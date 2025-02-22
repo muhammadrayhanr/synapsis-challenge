@@ -1,7 +1,7 @@
 export const dataLayout = [
   { path: '/', layout: 'home' },
   { path: '/users', layout: 'users' },
-  { path: '/post/:id', layout: 'post' },
+  { path: '/profile', layout: 'profile' },
 ];
 
 export const cardContentStyle: React.CSSProperties = {
