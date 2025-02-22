@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '@/api/users';
 import { getPosts } from '@/api/posts';
 
-const Content: React.FC = () => {
+const ContentList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const DATA_PER_PAGE = 5;
 
@@ -77,4 +77,4 @@ const Content: React.FC = () => {
   );
 };
 
-export default Content;
+export default ContentList;

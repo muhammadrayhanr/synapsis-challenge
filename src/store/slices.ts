@@ -3,11 +3,15 @@ import { create } from 'zustand';
 interface UserState {
   userId: null | number;
   setUserId: (id: number) => void;
+  selectedUser: null | any;
+  setSelectedUser: (user: any) => void;
 }
 
 export const userStore = create<UserState>((set) => ({
   userId: null,
   setUserId: (id: number) => set({ userId: id }),
+  selectedUser: null,
+  setSelectedUser: (user) => set({ selectedUser: user }),
 }));
 
 interface ModalState {

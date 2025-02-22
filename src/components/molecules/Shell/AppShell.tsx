@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/molecules/Navbar';
 import { Inter } from 'next/font/google';
-import SideMenu from '@/components/SideMenu';
+import SideMenu from '@/components/molecules/SideMenu';
 
 const inter = Inter({ subsets: ['latin'] });
 

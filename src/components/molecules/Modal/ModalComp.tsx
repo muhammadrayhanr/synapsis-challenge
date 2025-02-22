@@ -1,21 +1,22 @@
-'use client';
-
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 import { modalStore } from '@/store/slices';
 
-interface ModalFormProps {
+interface ModalCompProps {
   children: React.ReactNode;
   title: string;
+  handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
 }
 
-const ModalComp: React.FC<ModalFormProps> = ({ children, title }) => {
+const ModalComp: React.FC<ModalCompProps> = ({ children, title, handleSubmit }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
-
   const { showModal, setShowModal } = modalStore();
 
-  const handleOk = () => {
+  const handleOk = async () => {
     setConfirmLoading(true);
+    await handleSubmit();
+    setConfirmLoading(false);
+    setShowModal({ create: false, edit: false });
   };
 
   const handleCancel = () => {
@@ -26,19 +27,19 @@ const ModalComp: React.FC<ModalFormProps> = ({ children, title }) => {
     <Modal
       title={title}
       open={showModal.create || showModal.edit}
-      onOk={handleOk}
-      confirmLoading={confirmLoading}
       onCancel={handleCancel}
       footer={[
-        <Button key='back' onClick={handleCancel}>
+        <Button key="back" onClick={handleCancel}>
           Cancel
         </Button>,
-        <Button key='submit' type='primary' onClick={handleOk}>
+        <Button key="submit" type="primary" loading={confirmLoading} onClick={handleOk}>
           Submit
         </Button>,
       ]}
     >
-      {children}
+      <form onSubmit={handleSubmit}>
+        {children}
+      </form>
     </Modal>
   );
 };

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import Content from '../Content';
-import Users from '@/pages/users';
+import ContentList from '@/components/organisms/ContentList';
+import UserList from '@/components/organisms/UserList';
 
 const LayoutShell = () => {
   const router = useRouter();
@@ -18,15 +18,15 @@ const LayoutShell = () => {
   if (findLayout) {
     switch (findLayout.layout) {
       case 'home':
-        return <Content />;
+        return <ContentList />;
       case 'users':
-        return <Users />;
+        return <UserList />;
       default:
-        return <Content />;
+        return <ContentList />;
     }
   }
 
-  return <Content />;
+  return <ContentList />;
 };
 
 export default LayoutShell;
