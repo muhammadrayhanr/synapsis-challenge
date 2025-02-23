@@ -1,18 +1,66 @@
-import React from 'react';
-import { Layout } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Drawer, Menu, Button } from 'antd';
+import {
+  MenuOutlined,
+  HomeOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { useRouter } from 'next/router';
+import { userStore } from '@/store/slices';
 import { headerStyle } from '@/lib/mocks';
 
 const { Header } = Layout;
 
 const Navbar: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const { userId } = userStore();
+
+  const toggleDrawer = () => setOpen(!open);
+
+  const onClickMenu = (e: { key: string }) => {
+    router.push(e.key);
+    setOpen(false); // Tutup drawer setelah klik
+  };
+
+  const menuItems = [
+    { key: '/', icon: <HomeOutlined />, label: 'Home' },
+    { key: '/users', icon: <TeamOutlined />, label: 'Users' },
+    ...(userId
+      ? [{ key: '/profile', icon: <UserOutlined />, label: 'Profile' }]
+      : []),
+  ];
+
   return (
-    <Layout>
-      <Header style={headerStyle}>
-        <div className='font-semibold text-[18px] text-center lg:text-start w-full'>
-          Synapsis Challenge
-        </div>
-      </Header>
-    </Layout>
+    <Header
+      style={headerStyle}
+      className='flex justify-between items-center px-4'
+    >
+      <div className='font-semibold text-[18px] p-2'>
+        Synapsis Challenge
+      </div>
+
+      {/* Hamburger Button (Hanya Muncul di Mobile) */}
+      <Button
+        // type={'primary'}
+        className='lg:hidden text-black text-xl'
+        onClick={toggleDrawer}
+      >
+        <MenuOutlined />
+      </Button>
+
+      {/* Drawer untuk Menu */}
+      <Drawer
+        title='Menu'
+        placement='right'
+        closable={true}
+        onClose={toggleDrawer}
+        open={open}
+      >
+        <Menu mode='vertical' items={menuItems} onClick={onClickMenu} />
+      </Drawer>
+    </Header>
   );
 };
 

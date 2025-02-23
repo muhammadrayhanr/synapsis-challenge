@@ -7,8 +7,8 @@ export const dataLayout = [
 
 export const cardContentStyle: React.CSSProperties = {
   width: '100%',
-  minWidth: 400,
-  maxWidth: 600,
+  minWidth: 260,
+  // maxWidth: 600,
   border: '3px solid #f0f0f0',
 };
 
@@ -35,7 +35,7 @@ export const headerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#000',
   height: 64,
-  paddingInline: 48,
+  paddingInline: 24,
   lineHeight: '64px',
   backgroundColor: '#fff',
   display: 'flex',

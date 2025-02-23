@@ -1,11 +1,11 @@
 import { getUserPosts } from '@/api/posts';
-import { cardContentStyle, cardProfileStyle } from '@/lib/mocks';
+import { cardProfileStyle } from '@/lib/mocks';
 import { useQuery } from '@tanstack/react-query';
-import { Avatar, Card } from 'antd';
+import { Card } from 'antd';
 import React from 'react';
 
 const ProfilePost: React.FC<ProfileProps> = ({ userId, viewOnly }) => {
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['posts', userId],
     queryFn: () => getUserPosts(userId),
     enabled: !!userId,

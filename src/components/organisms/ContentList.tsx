@@ -43,7 +43,7 @@ const ContentList: React.FC = () => {
   );
 
   return (
-    <Flex gap='middle' align='center' vertical>
+    <div className='grid gap-3 place-items-center'>
       {paginatedData?.map((post: PostProps) => {
         const user = users.data?.find((u: UserProps) => u.id === post.user_id);
         return (
@@ -92,7 +92,7 @@ const ContentList: React.FC = () => {
           onClick={() => setShowModal({ createPost: true })}
         />
       )}
-    </Flex>
+    </div>
   );
 };
 

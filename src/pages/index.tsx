@@ -1,9 +1,9 @@
-import LayoutShell from '@/components/molecules/Shell/LayoutShell';
+import ContentList from '@/components/organisms/ContentList';
 
 export default function Home() {
   return (
     <main>
-      <LayoutShell />
+      <ContentList />
     </main>
   );
 }

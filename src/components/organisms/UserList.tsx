@@ -1,10 +1,8 @@
 import { deleteUser, getUsers } from '@/api/users';
-import { modalStore } from '@/store/slices';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Avatar, Card, Flex, Pagination } from 'antd';
 import { useState } from 'react';
 import { cardUserStyle } from '@/lib/mocks';
-import ModalEditUserForm from '@/components/molecules/Modal/Form/ModalEditUserForm';
 import queryClient from '@/config/providers/queryClient';
 import { showNotification } from '@/lib/utils';
 import Link from 'next/link';
@@ -12,10 +10,6 @@ import Link from 'next/link';
 const UserList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const DATA_PER_PAGE = 8;
-
-  const { showModal, setShowModal } = modalStore();
-
-  const [selectedUser, setSelectedUser] = useState<UserProps | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ['users'],
@@ -28,25 +22,6 @@ const UserList: React.FC = () => {
     currentPage * DATA_PER_PAGE
   );
 
-  const submit = useMutation({
-    mutationFn: ({ id }: { id: number }) => deleteUser(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      showNotification(
-        'success',
-        'User Deleted',
-        'User has been successfully deleted.'
-      );
-    },
-    onError: () => {
-      showNotification(
-        'error',
-        'Delete Failed',
-        'Failed to delete user. Please try again.'
-      );
-    },
-  });
-
   if (isLoading) {
     return (
       <Flex wrap gap='small' justify='center'>
@@ -56,15 +31,6 @@ const UserList: React.FC = () => {
       </Flex>
     );
   }
-
-  const handleEditClick = (user: UserProps) => {
-    setSelectedUser(user);
-    setShowModal({ edit: true });
-  };
-
-  const confirm = (user: UserProps) => {
-    submit.mutate({ id: user.id });
-  };
 
   return (
     <Flex vertical align='center' className='py-3'>
@@ -113,10 +79,6 @@ const UserList: React.FC = () => {
         onChange={(page) => setCurrentPage(page)}
         className='mt-5'
       />
-
-      {showModal.edit && selectedUser && (
-        <ModalEditUserForm title='Edit User' defaultValues={selectedUser} />
-      )}
     </Flex>
   );
 };
