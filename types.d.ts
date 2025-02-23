@@ -95,3 +95,7 @@ interface ProfileProps {
   userId: any;
   viewOnly: boolean;
 }
+
+interface CommentProps extends PostProps {
+  name: string;
+}

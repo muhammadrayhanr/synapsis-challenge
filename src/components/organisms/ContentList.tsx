@@ -7,6 +7,7 @@ import { cardContentStyle } from '@/lib/mocks';
 import { modalStore, userStore } from '@/store/slices';
 import ModalCreatePostForm from '@/components/molecules/Modal/Form/ModalCreatePostForm';
 import { PlusOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
 const ContentList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,17 +16,17 @@ const ContentList: React.FC = () => {
   const { showModal, setShowModal } = modalStore();
   const { userId } = userStore();
 
-  const users = useQuery({
+  const { data: users, isLoading: usersLoading } = useQuery({
     queryKey: ['users'],
     queryFn: getUsers,
   });
 
-  const posts = useQuery({
+  const { data: posts, isLoading: postsLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: getPosts,
   });
 
-  if (posts.isLoading || users.isLoading) {
+  if (postsLoading || usersLoading) {
     return (
       <Flex gap='middle' align='center' vertical>
         {[...Array(DATA_PER_PAGE)].map((_, index) => (
@@ -35,9 +36,9 @@ const ContentList: React.FC = () => {
     );
   }
 
-  const totalPosts = posts.data?.length || 0;
+  const totalPosts = posts?.length || 0;
 
-  const paginatedData = posts.data?.slice(
+  const paginatedData = posts?.slice(
     (currentPage - 1) * DATA_PER_PAGE,
     currentPage * DATA_PER_PAGE
   );
@@ -45,7 +46,7 @@ const ContentList: React.FC = () => {
   return (
     <div className='grid gap-3 place-items-center'>
       {paginatedData?.map((post: PostProps) => {
-        const user = users.data?.find((u: UserProps) => u.id === post.user_id);
+        const user = users?.find((u: UserProps) => u.id === post.user_id);
         return (
           <Card style={cardContentStyle} key={post.id}>
             <Card.Meta
@@ -54,7 +55,11 @@ const ContentList: React.FC = () => {
                   src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${post.id}`}
                 />
               }
-              title={post.title}
+              title={
+                <>
+                  <Link href={`/posts/${post.id}`}>{post.title}</Link>
+                </>
+              }
               description={
                 <>
                   <p className='line-clamp-4'>{post.body}</p>
