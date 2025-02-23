@@ -14,19 +14,23 @@ const AppShell = ({ children }: { children: ReactNode }) => {
   const { userId } = userStore();
 
   return (
-    <div className={`min-h-screen bg-background ${inter.className}`}>
+    <div
+      className={`flex flex-col min-h-screen bg-background ${inter.className}`}
+    >
       <Navbar />
-      <div className='grid grid-cols-1 lg:grid-cols-5 gap-3 justify-center p-8'>
+
+      <div className='flex-1 grid grid-cols-1 lg:grid-cols-5 gap-3 justify-center p-8'>
         <div className='hidden lg:block'>
           <SideMenu />
         </div>
         <div className='col-span-3 pb-3'>{children}</div>
         <div className='hidden lg:block' />
       </div>
+
       {showModal.createUser && (
         <ModalCreateUserForm title='Become a user!' defaultValues={null} />
       )}
-      
+
       {!userId && (
         <FloatButton
           icon={<LoginOutlined />}
@@ -40,6 +44,10 @@ const AppShell = ({ children }: { children: ReactNode }) => {
           onClick={() => setShowModal({ createUser: true })}
         />
       )}
+
+      <footer className=' text-black text-center py-2 text-sm mt-auto border-t-2 bg-white'>
+        Created by Rayhan for Synapsis Challenge
+      </footer>
     </div>
   );
 };
