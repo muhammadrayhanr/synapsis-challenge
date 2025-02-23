@@ -12,9 +12,24 @@ export const getPosts = async () => {
   return response.data;
 };
 
-export const createPost = async (data: UserProps): Promise<PostProps> => {
+export const getUserPosts = async (id: number | null) => {
+  const response = await axios.get(
+    `https://gorest.co.in//public/v2/users/${id}/posts`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GOREST_TOKEN}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const createPost = async (
+  data: UserProps,
+  id: number | null
+): Promise<PostProps> => {
   const response = await axios.post(
-    'https://gorest.co.in/public/v2/users/7373645/posts',
+    `https://gorest.co.in/public/v2/users/${id}/posts`,
     data,
     {
       headers: {

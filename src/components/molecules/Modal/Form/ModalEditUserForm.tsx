@@ -27,8 +27,7 @@ const ModalEditUserForm: React.FC<ModalFormProps> = ({
   }, [defaultValues, reset]);
 
   const mutation = useMutation({
-    mutationFn: ({ data, id }: { data: any; id: number }) =>
-      editUser(data, id),
+    mutationFn: ({ data, id }: { data: any; id: number }) => editUser(data, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       showNotification(
@@ -48,7 +47,7 @@ const ModalEditUserForm: React.FC<ModalFormProps> = ({
 
   const onSubmit = (data: any) => {
     if (!defaultValues?.id) {
-      console.error('ID tidak ditemukan!');
+      showNotification('error', 'Edit Failed', 'User ID not found.');
       return;
     }
 

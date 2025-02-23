@@ -23,7 +23,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
         <div className='col-span-3 pb-3'>{children}</div>
         <div className='hidden lg:block' />
       </div>
-      {showModal.create && (
+      {showModal.createUser && (
         <ModalCreateUserForm title='Become a user!' defaultValues={null} />
       )}
       
@@ -37,7 +37,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
             height: 54,
             fontSize: 12,
           }}
-          onClick={() => setShowModal({ create: true })}
+          onClick={() => setShowModal({ createUser: true })}
         />
       )}
     </div>

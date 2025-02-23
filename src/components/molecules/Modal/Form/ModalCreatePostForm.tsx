@@ -9,6 +9,7 @@ import queryClient from '@/config/providers/queryClient';
 import Textarea from '@/components/atoms/Textarea';
 import { createPost } from '@/api/posts';
 import { showNotification } from '@/lib/utils';
+import { userStore } from '@/store/slices';
 
 const ModalCreatePostForm: React.FC<ModalFormProps> = ({
   title,
@@ -19,6 +20,8 @@ const ModalCreatePostForm: React.FC<ModalFormProps> = ({
     mode: 'onChange',
   });
 
+  const {userId} = userStore()
+
   useEffect(() => {
     if (defaultValues) {
       reset(defaultValues);
@@ -26,7 +29,7 @@ const ModalCreatePostForm: React.FC<ModalFormProps> = ({
   }, [defaultValues, reset]);
 
   const submit = useMutation({
-    mutationFn: ({ data }: { data: any }) => createPost(data),
+    mutationFn: ({ data }: { data: any }) => createPost(data, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       showNotification(
@@ -35,12 +38,13 @@ const ModalCreatePostForm: React.FC<ModalFormProps> = ({
         'Post has been successfully created.'
       );
     },
-    onError: () => {
+    onError: (error) => {
       showNotification(
         'error',
         'Create Failed',
         'Failed to create post. Please try again.'
       );
+      console.log(error)
     },
   });
 

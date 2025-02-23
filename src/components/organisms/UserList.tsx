@@ -1,24 +1,19 @@
 import { deleteUser, getUsers } from '@/api/users';
-import { modalStore, userStore } from '@/store/slices';
+import { modalStore } from '@/store/slices';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Avatar, Card, Flex, Pagination, Popconfirm } from 'antd';
-import {
-  DeleteOutlined,
-  EditOutlined,
-  QuestionCircleOutlined,
-} from '@ant-design/icons';
+import { Avatar, Card, Flex, Pagination } from 'antd';
 import { useState } from 'react';
 import { cardUserStyle } from '@/lib/mocks';
 import ModalEditUserForm from '@/components/molecules/Modal/Form/ModalEditUserForm';
 import queryClient from '@/config/providers/queryClient';
 import { showNotification } from '@/lib/utils';
+import Link from 'next/link';
 
 const UserList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const DATA_PER_PAGE = 8;
 
   const { showModal, setShowModal } = modalStore();
-  const { userId } = userStore();
 
   const [selectedUser, setSelectedUser] = useState<UserProps | null>(null);
 
@@ -75,45 +70,7 @@ const UserList: React.FC = () => {
     <Flex vertical align='center' className='py-3'>
       <Flex wrap gap='small' justify='center'>
         {paginatedData.map((user: UserProps) => (
-          <Card
-            key={user.id}
-            style={cardUserStyle}
-            actions={
-              userId
-                ? [
-                    <EditOutlined
-                      key='edit'
-                      onClick={
-                        user?.id === userId
-                          ? undefined
-                          : () => handleEditClick(user)
-                      }
-                      style={{
-                        cursor: user?.id === userId ? 'not-allowed' : 'pointer',
-                      }}
-                    />,
-                    <Popconfirm
-                      key='delete'
-                      title='Delete User'
-                      description='Are you sure to delete this user?'
-                      onConfirm={() => confirm(user)}
-                      okText='Yes'
-                      cancelText='No'
-                      icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      disabled={user?.id === userId ? true : false}
-                    >
-                      <DeleteOutlined
-                        onClick={() => setSelectedUser(user)}
-                        style={{
-                          cursor:
-                            user?.id === userId ? 'not-allowed' : 'pointer',
-                        }}
-                      />
-                    </Popconfirm>,
-                  ]
-                : []
-            }
-          >
+          <Card key={user.id} style={cardUserStyle}>
             <Card.Meta
               avatar={
                 <Avatar
@@ -122,9 +79,11 @@ const UserList: React.FC = () => {
               }
               title={
                 <div className='font-normal text-base flex items-center justify-between'>
-                  <span className='truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] sm:max-w-[200px]'>
-                    {user.name}
-                  </span>
+                  <Link href={`/users/${user.id}`}>
+                    <span className='truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] sm:max-w-[200px]'>
+                      {user.name}
+                    </span>
+                  </Link>
                   <span
                     className={`w-2 h-2 rounded-full hidden lg:block ${
                       user.status === 'active' ? 'bg-green-500' : 'bg-red-500'

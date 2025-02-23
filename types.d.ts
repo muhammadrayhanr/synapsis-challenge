@@ -66,14 +66,15 @@ interface TextProps {
 
 interface UserState {
   userId: null | number;
-  setUserId: (id: number) => void;
+  setUserId: (id: number | null) => void;
   selectedUser: null | any;
   setSelectedUser: (user: any) => void;
 }
 
 interface ModalState {
   showModal: {
-    create: boolean;
+    createUser: boolean;
+    createPost: boolean;
     edit: boolean;
   };
   setShowModal: (value: Partial<ModalState['showModal']>) => void;
@@ -88,4 +89,9 @@ interface TextareaProps {
   cols?: number;
   placeholder?: string;
   [key: string]: any;
+}
+
+interface ProfileProps {
+  userId: any;
+  viewOnly: boolean;
 }

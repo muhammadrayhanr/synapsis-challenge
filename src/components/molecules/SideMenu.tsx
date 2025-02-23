@@ -24,14 +24,14 @@ const SideMenu: React.FC = () => {
       label: 'Home',
     },
     {
-      key: 'users',
+      key: '/users',
       icon: <TeamOutlined />,
       label: 'Users',
     },
     ...(userId
       ? [
           {
-            key: 'profile',
+            key: '/profile',
             icon: <UserOutlined />,
             label: 'Profile',
           },

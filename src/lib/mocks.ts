@@ -2,6 +2,7 @@ export const dataLayout = [
   { path: '/', layout: 'home' },
   { path: '/users', layout: 'users' },
   { path: '/profile', layout: 'profile' },
+  { path: '/users/:id', layout: 'userProfile' },
 ];
 
 export const cardContentStyle: React.CSSProperties = {
@@ -15,6 +16,12 @@ export const cardUserStyle: React.CSSProperties = {
   width: '100%',
   minWidth: 260,
   maxWidth: '40%',
+  border: '3px solid #f0f0f0',
+};
+
+export const cardProfileStyle: React.CSSProperties = {
+  width: '100%',
+  minWidth: 220,
   border: '3px solid #f0f0f0',
 };
 

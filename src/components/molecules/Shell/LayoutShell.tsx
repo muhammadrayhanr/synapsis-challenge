@@ -3,6 +3,7 @@ import ContentList from '@/components/organisms/ContentList';
 import UserList from '@/components/organisms/UserList';
 import { dataLayout } from '@/lib/mocks';
 import Profile from '@/components/organisms/Profile';
+import UserProfile from '@/pages/users/[id]';
 
 const LayoutShell = () => {
   const router = useRouter();
@@ -19,6 +20,8 @@ const LayoutShell = () => {
         return <UserList />;
       case 'profile':
         return <Profile />;
+      case 'userProfile':
+        return <UserProfile />;
       default:
         return <ContentList />;
     }

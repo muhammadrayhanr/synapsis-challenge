@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Avatar, Card, Flex, FloatButton, Pagination } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '@/api/users';
@@ -10,7 +10,6 @@ import { PlusOutlined } from '@ant-design/icons';
 
 const ContentList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  // const [isUser, setIsUser] = useState(false);
   const DATA_PER_PAGE = 4;
 
   const { showModal, setShowModal } = modalStore();
@@ -25,10 +24,6 @@ const ContentList: React.FC = () => {
     queryKey: ['posts'],
     queryFn: getPosts,
   });
-
-  // useEffect(() => {
-  //   if (userId) return setIsUser(true);
-  // }, []);
 
   if (posts.isLoading || users.isLoading) {
     return (
@@ -80,7 +75,7 @@ const ContentList: React.FC = () => {
         onChange={(page) => setCurrentPage(page)}
       />
 
-      {showModal.create && userId && (
+      {showModal.createPost && userId && (
         <ModalCreatePostForm title='Create Post' defaultValues={null} />
       )}
 
@@ -94,7 +89,7 @@ const ContentList: React.FC = () => {
             height: 54,
             fontSize: 12,
           }}
-          onClick={() => setShowModal({ create: true })}
+          onClick={() => setShowModal({ createPost: true })}
         />
       )}
     </Flex>

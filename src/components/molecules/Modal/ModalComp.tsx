@@ -14,17 +14,17 @@ const ModalComp: React.FC<ModalCompProps> = ({
     setConfirmLoading(true);
     await handleSubmit();
     setConfirmLoading(false);
-    setShowModal({ create: false, edit: false });
+    setShowModal({ createPost: false, createUser: false, edit: false });
   };
 
   const handleCancel = () => {
-    setShowModal({ create: false, edit: false });
+    setShowModal({ createUser: false, createPost: false, edit: false });
   };
 
   return (
     <Modal
       title={title}
-      open={showModal.create || showModal.edit}
+      open={showModal.createUser || showModal.createPost || showModal.edit}
       onCancel={handleCancel}
       footer={[
         <Button key='back' onClick={handleCancel}>
