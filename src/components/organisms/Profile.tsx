@@ -52,7 +52,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className='bg-white rounded-lg items-center p-6'>
+    <div className='bg-white border-2 rounded-lg items-center p-6'>
       <ProfileHeader userId={userId} viewOnly={false} />
       <ProfilePost userId={userId} viewOnly={false} />
       <div className='flex justify-end'>

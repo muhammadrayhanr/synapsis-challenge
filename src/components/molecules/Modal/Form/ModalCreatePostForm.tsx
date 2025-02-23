@@ -20,7 +20,7 @@ const ModalCreatePostForm: React.FC<ModalFormProps> = ({
     mode: 'onChange',
   });
 
-  const {userId} = userStore()
+  const { userId } = userStore();
 
   useEffect(() => {
     if (defaultValues) {
@@ -44,7 +44,6 @@ const ModalCreatePostForm: React.FC<ModalFormProps> = ({
         'Create Failed',
         'Failed to create post. Please try again.'
       );
-      console.log(error)
     },
   });
 

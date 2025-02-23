@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 const UserProfile: React.FC = () => {
   const { userId } = userStore();
   const router = useRouter();
-  console.log(router.query.id)
 
   useEffect(() => {
     if (!userId) {
@@ -16,7 +15,7 @@ const UserProfile: React.FC = () => {
       showNotification(
         'error',
         'Forbidden Act',
-        'You have to login first. Please try again.'
+        'You have to be a user first. Please try again.'
       );
     }
   }, [userId, router]);

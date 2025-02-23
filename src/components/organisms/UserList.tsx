@@ -1,10 +1,8 @@
-import { deleteUser, getUsers } from '@/api/users';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { getUsers } from '@/api/users';
+import { useQuery } from '@tanstack/react-query';
 import { Avatar, Card, Flex, Pagination } from 'antd';
 import { useState } from 'react';
 import { cardUserStyle } from '@/lib/mocks';
-import queryClient from '@/config/providers/queryClient';
-import { showNotification } from '@/lib/utils';
 import Link from 'next/link';
 
 const UserList: React.FC = () => {

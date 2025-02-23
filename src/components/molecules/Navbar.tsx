@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
 
   const onClickMenu = (e: { key: string }) => {
     router.push(e.key);
-    setOpen(false); // Tutup drawer setelah klik
+    setOpen(false);
   };
 
   const menuItems = [
@@ -41,16 +41,13 @@ const Navbar: React.FC = () => {
         Synapsis Challenge
       </div>
 
-      {/* Hamburger Button (Hanya Muncul di Mobile) */}
       <Button
-        // type={'primary'}
         className='lg:hidden text-black text-xl'
         onClick={toggleDrawer}
       >
         <MenuOutlined />
       </Button>
 
-      {/* Drawer untuk Menu */}
       <Drawer
         title='Menu'
         placement='right'

@@ -21,7 +21,7 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
     mode: 'onChange',
   });
 
-  const { userId, setUserId } = userStore();
+  const { setUserId } = userStore();
 
   useEffect(() => {
     if (defaultValues) {
@@ -48,8 +48,6 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
       );
     },
   });
-
-  console.log(userId);
 
   const onSubmit = (data: any) => {
     submit.mutate({ data });
