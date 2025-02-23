@@ -38,7 +38,7 @@ const ModalCreatePostForm: React.FC<ModalFormProps> = ({
         'Post has been successfully created.'
       );
     },
-    onError: (error) => {
+    onError: () => {
       showNotification(
         'error',
         'Create Failed',

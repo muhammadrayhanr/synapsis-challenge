@@ -14,7 +14,7 @@ export const getUsers = async () => {
 
 export const getUserDetail = async (id: number | null): Promise<UserProps> => {
   const response = await axios.get(
-    `https://gorest.co.in//public/v2/users/${id}`,
+    `https://gorest.co.in/public/v2/users/${id}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_GOREST_TOKEN}`,

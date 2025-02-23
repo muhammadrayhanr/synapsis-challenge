@@ -11,10 +11,9 @@ import { showNotification } from '@/lib/utils';
 import { useRouter } from 'next/router';
 
 const Profile: React.FC = () => {
-  const { userId } = userStore();
   const router = useRouter();
 
-  const { setUserId } = userStore();
+  const { userId, setUserId } = userStore();
 
   useEffect(() => {
     if (!userId) {
@@ -22,7 +21,7 @@ const Profile: React.FC = () => {
       showNotification(
         'error',
         'Forbidden Act',
-        'You have to login first. Please try again.'
+        'You have to be a user first. Please try again.'
       );
     }
   }, [userId, router]);
@@ -60,14 +59,15 @@ const Profile: React.FC = () => {
           key='delete'
           title='Delete Account'
           description='Are you sure to delete your account?'
+          placement="topLeft"
           onConfirm={() => confirm(userId)}
           okText='Yes'
           cancelText='No'
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
         >
-          <Button color='danger' variant='outlined' className='text-sm'>
+          <Button color='danger' variant='solid' className='text-sm'>
             <DeleteOutlined />
-            Delete Account
+            Revoke Account
           </Button>
         </Popconfirm>
       </div>
