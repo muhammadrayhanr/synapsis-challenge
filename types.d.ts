@@ -29,6 +29,7 @@ interface ModalCompProps {
   children: React.ReactNode;
   title: string;
   handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  isDisabled: boolean;
 }
 
 interface ModalFormProps {
