@@ -34,14 +34,14 @@ const Profile: React.FC = () => {
       showNotification(
         'success',
         'User Deleted',
-        'User has been successfully deleted.'
+        'User has been successfully revoked.'
       );
     },
     onError: () => {
       showNotification(
         'error',
-        'Delete Failed',
-        'Failed to delete user. Please try again.'
+        'Revoke Failed',
+        'Failed to revoke user. Please try again.'
       );
     },
   });
@@ -57,9 +57,9 @@ const Profile: React.FC = () => {
       <div className='flex justify-end'>
         <Popconfirm
           key='delete'
-          title='Delete Account'
-          description='Are you sure to delete your account?'
-          placement="topLeft"
+          title='Revoke Account'
+          description='Are you sure to revoke your account?'
+          placement='topLeft'
           onConfirm={() => confirm(userId)}
           okText='Yes'
           cancelText='No'

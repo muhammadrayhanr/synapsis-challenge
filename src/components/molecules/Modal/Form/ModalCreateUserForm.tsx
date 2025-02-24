@@ -11,13 +11,21 @@ import { genderList, statusList } from '@/lib/mocks';
 import Dropdown from '@/components/atoms/Dropdown';
 import { showNotification } from '@/lib/utils';
 import { userStore } from '@/store/slices';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createUserSchema } from '@/lib/schemas';
 
 const ModalCreateUserForm: React.FC<ModalFormProps> = ({
   title,
   defaultValues,
 }) => {
-  const { control, handleSubmit, reset } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isValid, errors },
+  } = useForm({
     defaultValues,
+    resolver: yupResolver(createUserSchema),
     mode: 'onChange',
   });
 
@@ -54,10 +62,14 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
   };
 
   return (
-    <ModalComp title={title} handleSubmit={handleSubmit(onSubmit)}>
+    <ModalComp
+      title={title}
+      handleSubmit={handleSubmit(onSubmit)}
+      isDisabled={!isValid}
+    >
       <Flex vertical gap={16}>
         <div className={'grid grid-cols-[3fr_7fr] gap-[20px] items-center'}>
-          <Text text='Name' type='label' />
+          <Text text='Name' type='label' required />
           <Input
             control={control}
             name='name'
@@ -66,8 +78,11 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
             placeholder='Enter user name'
           />
         </div>
+        {errors.name && (
+          <p className='text-red-500 text-sm'>{String(errors.name.message)}</p>
+        )}
         <div className={'grid grid-cols-[3fr_7fr] gap-[20px] items-center'}>
-          <Text text='Email' type='label' />
+          <Text text='Email' type='label' required />
           <Input
             control={control}
             name='email'
@@ -76,8 +91,11 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
             placeholder='Enter user email'
           />
         </div>
+        {errors.email && (
+          <p className='text-red-500 text-sm'>{String(errors.email.message)}</p>
+        )}
         <div className={'grid grid-cols-[3fr_7fr] gap-[20px] items-center'}>
-          <Text text='Gender' type='label' />
+          <Text text='Gender' type='label' required />
           <Dropdown
             control={control}
             name='gender'
@@ -86,8 +104,13 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
             className='border gap-8 border-[#AFAFAF] bg-white rounded-[5px] py-[10px] px-[11px] w-full text-[12px] items-center'
           />
         </div>
+        {errors.gender && (
+          <p className='text-red-500 text-sm'>
+            {String(errors.gender.message)}
+          </p>
+        )}
         <div className={'grid grid-cols-[3fr_7fr] gap-[20px] items-center'}>
-          <Text text='Status' type='label' />
+          <Text text='Status' type='label' required />
           <Dropdown
             control={control}
             name='status'
@@ -96,6 +119,11 @@ const ModalCreateUserForm: React.FC<ModalFormProps> = ({
             className='border gap-8 border-[#AFAFAF] bg-white rounded-[5px] py-[10px] px-[11px] w-full text-[12px] items-center'
           />
         </div>
+        {errors.status && (
+          <p className='text-red-500 text-sm'>
+            {String(errors.status.message)}
+          </p>
+        )}
       </Flex>
     </ModalComp>
   );

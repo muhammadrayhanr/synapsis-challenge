@@ -52,7 +52,7 @@ const ContentList: React.FC = () => {
             <Card.Meta
               avatar={
                 <Avatar
-                  src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${post.id}`}
+                  src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${post.user_id}`}
                 />
               }
               title={

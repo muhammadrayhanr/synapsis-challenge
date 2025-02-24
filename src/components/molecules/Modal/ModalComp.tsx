@@ -6,6 +6,7 @@ const ModalComp: React.FC<ModalCompProps> = ({
   children,
   title,
   handleSubmit,
+  isDisabled
 }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { showModal, setShowModal } = modalStore();
@@ -35,6 +36,7 @@ const ModalComp: React.FC<ModalCompProps> = ({
           type='primary'
           loading={confirmLoading}
           onClick={handleOk}
+          disabled={isDisabled}
         >
           Submit
         </Button>,
