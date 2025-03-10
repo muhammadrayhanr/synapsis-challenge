@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
       className='flex justify-between items-center px-4'
     >
       <div className='font-semibold text-[18px] p-2'>
-        Synapsis Challenge
+        <span className='border-2 border-black p-1'>GF</span>
       </div>
 
       <Button
